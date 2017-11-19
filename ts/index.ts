@@ -1,3 +1,6 @@
+import EncryptionService from './service/EncryptionService';
+
+import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as log4js from 'log4js';
 
@@ -17,13 +20,31 @@ log4js.configure({
 const logger = log4js.getLogger();
 logger.level = 'info';
 
+const serverUrl = process.env.SERVER_URL || 'http://localhost:3000';
+const password = process.env.ENCRYPTION_KEY;
+
+if (!password) {
+  throw new Error('Encryption key is required');
+}
+
+const encryptionService = new EncryptionService(password);
+
 const app = express();
+app.use(bodyParser.text());
 app.use(log4js.connectLogger(logger, {
   level: 'debug'
 }));
 
 app.get('/', (req, res) => {
   res.sendStatus(200);
+});
+
+app.post('/create', (req, res) => {
+  res.send(`${serverUrl}/secret/${encryptionService.encrypt(req.body)}`);
+});
+
+app.get('/secret/:text', (req, res) => {
+  res.send(encryptionService.decrypt(req.params.text));
 });
 
 app.get('/health', (req, res) => {
