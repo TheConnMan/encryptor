@@ -9,7 +9,8 @@
     "test-only": "nyc mocha",
     "test": "npm run lint && npm run test-only",
     "lint": "tslint -p tslint.json",
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "start": "ts-node ts/index.ts"
   },
   "repository": {
     "type": "git",
