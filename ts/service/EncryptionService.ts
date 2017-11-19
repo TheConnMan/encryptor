@@ -25,7 +25,9 @@ class EncryptionService {
 
   public encrypt(secret: string): string {
     const cipher = Crypto.createCipher('aes256', this.password);
-    return cipher.update(secret, 'utf8', 'hex') + cipher.final('hex');
+    const encrypted = cipher.update(secret, 'utf8', 'hex') + cipher.final('hex');
+    this.hashService.clear(encrypted);
+    return encrypted;
   }
 
   public async decrypt(secret: string): Promise<string> {

@@ -23,6 +23,10 @@ class RedisHashService extends HashService {
   public expire(encrypted: string): void {
     this.redis.set(REDIS_PREFIX + this.getHash(encrypted), true);
   }
+
+  public clear(encrypted: string): void {
+    this.redis.del(REDIS_PREFIX + this.getHash(encrypted));
+  }
 }
 
 export default RedisHashService;
