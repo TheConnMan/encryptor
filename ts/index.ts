@@ -44,7 +44,11 @@ app.post('/create', (req, res) => {
 });
 
 app.get('/secret/:text', (req, res) => {
-  res.send(encryptionService.decrypt(req.params.text));
+  encryptionService.decrypt(req.params.text).then((text) => {
+    res.send(text);
+  }).catch((err: Error) => {
+    res.status(401).send(err.message);
+  });
 });
 
 app.get('/health', (req, res) => {

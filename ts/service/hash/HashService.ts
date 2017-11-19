@@ -2,7 +2,7 @@ import * as Crypto from 'crypto';
 
 abstract class HashService {
 
-  public abstract hasBeenUsed(encrypted: string): boolean;
+  public abstract hasBeenUsed(encrypted: string): Promise<boolean>;
 
   public abstract expire(encrypted: string): void;
 
